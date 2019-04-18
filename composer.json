@@ -23,6 +23,8 @@
   },
   "suggest": {
     "irazasyed/telegram-bot-sdk": "Will help you in creating a new TG bot(on PHP)"
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 
 }

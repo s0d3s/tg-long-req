@@ -47,6 +47,7 @@ Copy the "TgReqClass.php" to the project dir and:
 |$usr_req_dir|STR| Path to general request dir **|
 |$tg_api_key| SOMETH/* | irazasyed/telegram-bot-sdk Api() object* |
 |$tg_api_result| SOMETH/* |Api()->getWebhookUpdates() |
+
 *It could be something else, or be null.
 **Temporary requests from users will be stored in this folder.
 

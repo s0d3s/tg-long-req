@@ -8,7 +8,8 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
 ## Abstract exemple
 ![](http://g.recordit.co/rqonFOdR4t.gif)
 ## INSTALL
-**via composer**-----------------------------------------
+**via composer**
+
 (add this to section "require" in your composer.json)
 
     {
@@ -20,7 +21,8 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
    
     include_once('path/to/autoload.php');
 
-**manual** -----------------------------------------------
+**manual**
+
 Copy the "TgReqClass.php" to the project dir and:
 
     include_once('TgReqClass.php');

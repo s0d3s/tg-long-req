@@ -60,8 +60,8 @@ class TgLongReq{
 	!	and to facilitate the class itself.
 	*/
 	
-	public function __construct($u_id, $ReqFunc, $tg_api, $tg_result=null,$usr_req_dir = 'req/'){
-		
+	public function __construct($u_id, $ReqFunc, $usr_req_dir = 'req/', $tg_api=null, $tg_result=null){
+	
 		$this->usrid 		= $u_id;
 		$this->usr_req_dir	= $_SERVER['DOCUMENT_ROOT'].$usr_req_dir;
 		$this->ReqFunc		= $ReqFunc;

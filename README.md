@@ -24,9 +24,9 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
 
 **manual**
 
-Copy the "TgReqClass.php" to the project dir and:
+Copy the "TgLongReq.php" to the project dir and:
 
-    include_once('TgReqClass.php');
+    include_once('TgLongReq.php');
 
 ## Simple use
 

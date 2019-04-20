@@ -20,6 +20,7 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
    and 
    
     include_once('path/to/autoload.php');
+	use TgLongReq\TgLongReq;
 
 **manual**
 

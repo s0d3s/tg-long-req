@@ -47,7 +47,8 @@ class TgLongReq{
 	*
 	!	IF YOU WANT 'tg_api' and 'tg_result' can be of any type, or be NULL, depending on their further use
 	*/
-
+	private $temp_file_prefix = 'TempData';
+	private $temp_data_dir;
 	private $usrid;
 	private $usr_req_dir;
 	private $ReqFunc = array();
@@ -63,12 +64,16 @@ class TgLongReq{
 	*/
 	
 	public function __construct($u_id, $ReqFunc, $usr_req_dir = 'req/', $tg_api=null, $tg_result=null){
-	
+		
 		$this->usrid 		= $u_id;
 		$this->usr_req_dir	= $_SERVER['DOCUMENT_ROOT'].$usr_req_dir;
 		$this->ReqFunc		= $ReqFunc;
 		$this->tg_result	= $tg_result;
-		$this->tg_api		= $tg_api;		
+		$this->tg_api		= $tg_api;	
+		$this->temp_data_dir= $this->usr_req_dir.$this->temp_file_prefix.'/';
+		
+		if(!file_exists($this->temp_data_dir)) mkdir($this->temp_data_dir, 0777, true);
+		if(!file_exists($this->usr_req_dir)) mkdir($this->usr_req_dir, 0777, true);
 	}
 	
 	/*		RETRUNS
@@ -134,6 +139,46 @@ class TgLongReq{
 		}
 		return $this->SetError(NULL, true, 'REQ_DIDNT_MATCH');
 	}
+	
+	public function SaveToTemp($data){
+		/*
+			SAVING TEMPORARY DATA TO TEMP FILE
+		*/
+		
+		/*	Struct of file(temp data file):
+		*	[json_ensoded data]
+		*/
+		/*
+		@	$data		|ALL without 'resorce'|		Something for writing to file
+		*/
+		
+		$str2write = json_encode($data);
+		$tmp_name = $this->temp_data_dir.$this->temp_file_prefix.'-'.$this->usrid.'.txt';
+		
+		$temp_file = fopen($tmp_name, 'w+');
+		fwrite($temp_file, $str2write);
+		fclose($temp_file);
+		
+		return $this->SetError($str2write, false);
+	}
+	
+	public function GetFromTemp($hold_it = false){
+		/*
+			RETURNS THE OBJECT RECEIVED FROM THE TEMP FILE
+		*/
+		/*
+		@	$hold_it		BOOL		If true, then file is not deleted after use
+		*/
+		
+		$tmp_name = $this->temp_data_dir.$this->temp_file_prefix.'-'.$this->usrid.'.txt';
+			
+		$temp_data = file_get_contents ($tmp_name);
+		$rtrn_obj = json_decode($temp_data);
+		
+		if(!$hold_it) unlink($tmp_name);	
+		return $rtrn_obj;
+	}
+	
 	public function GetError(){
 		
 		$rtrn_arr = array();

@@ -48,9 +48,9 @@ class TgLongReq{
 	!	IF YOU WANT 'tg_api' and 'tg_result' can be of any type, or be NULL, depending on their further use
 	*/
 	private $temp_file_prefix = 'TempData';
-	private $temp_data_dir;
-	private $usrid;
-	private $usr_req_dir;
+	public  $temp_data_dir;
+	public  $usrid;
+	public  $usr_req_dir;
 	private $ReqFunc = array();
 	private $tg_result;
 	private $tg_api;
@@ -83,28 +83,35 @@ class TgLongReq{
 	*/
 	
 	public function ReqCheck(){
-		if(!glob( $this->usr_req_dir.'/'.$this->usrid."*.txt"))return false; else return true;
+		/*
+			CHECKS FOR REQUEST
+		*/
+		$file_list = glob( $this->usr_req_dir.'/'.$this->usrid."*.txt");
+		if(!$file_list)
+			return false; 
+		else 
+			return trim(file($file_list[0], FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES)[1]);
 	}
 	
-	public function ReqCreate($type){
+	public function ReqCreate($name, $type = 'usual'){
 		/*
 			FOR CREATE NEW REQUEST
 		*/
 		/*
-		@	$type	STR		request_name
+		@	$name	STR		request_name
+		@	$type	STR		request_type(usual/inline)
+		)
 		*/
 		if($this->ReqCheck()) $this->ReqDel();
-		$type=trim($type);
+		$name=trim($name);
 		foreach($this->ReqFunc as $key=>$val){
-			if($key==$type){
-				
-				//$this->tg_api->sendMessage([ 'chat_id' => $this->usrid ,  'text' =>"sdw"]);
+			if($key == $name){
 				
 				$usr_req_file = fopen($this->usr_req_dir.'/'.$this->usrid . date("-y.m.d-h_i_s").'.txt', 'w+');
 				if(!file_exists($usr_req_dir)) mkdir($usr_req_file, 0777, true);
-				fwrite($usr_req_file, $key);
+				fwrite($usr_req_file, $key."\n".$type);
 				fclose($usr_req_file);
-				return $this->SetError($key);
+				return $this->SetError(array($key, $type));
 			}
 		}
 		return $this->SetError(NULL, true, 'REQ_DIDNT_EXIST_IN_THE_TABLE');
@@ -124,18 +131,21 @@ class TgLongReq{
 		*/
 		
 		/*	Struct of file(req):
+		*	[ req_name  ]
 		*	[type_of_req]
 		*/
-		$curreq="";
+		$curreq 	= "";
+		$curtype 	= "";
 		foreach (glob($this->usr_req_dir."/".$this->usrid."*.txt") as $reqF) {
-			$reqfile = fopen($reqF, 'r');
-			$curreq=trim(fgets($reqfile));
-			fclose($reqfile);
+			$reqfile 	= file($reqF, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
+			$curreq 	= trim($reqfile[0]);
+			$curtype	= trim($reqfile[1]);
 			unlink($reqF);
+			break;
 		}
 		
 		foreach($this->ReqFunc as $key => $value){
-				if($key==$curreq) return $this->SetError(($this->ReqFunc[$key])($this->tg_result, $this, $key, $this->tg_api));
+				if($key == $curreq) return $this->SetError(($this->ReqFunc[$key])($this->tg_result, $this, $key));
 		}
 		return $this->SetError(NULL, true, 'REQ_DIDNT_MATCH');
 	}
@@ -180,7 +190,9 @@ class TgLongReq{
 	}
 	
 	public function GetError(){
-		
+		/*
+			GET LAST ERROR
+		*/
 		$rtrn_arr = array();
 		
 		if($this->err_tab['error'])

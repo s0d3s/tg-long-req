@@ -119,9 +119,9 @@ class TgLongReq{
 	public function ReqDel(){
 		/*
 			DELETE USR REQUESTS
-		*/
-		global $usrid, $usr_lp_req_dir;
-		foreach(glob("$usr_lp_req_dir/$usrid*.txt") as $reqF) unlink($reqF);
+		*/	
+		foreach(glob($this->usr_req_dir."/".$this->usrid."*.txt") as $reqF) unlink($reqF);
+		
 		return $this->SetError();
 	}
 	
@@ -137,11 +137,13 @@ class TgLongReq{
 		$curreq 	= "";
 		$curtype 	= "";
 		foreach (glob($this->usr_req_dir."/".$this->usrid."*.txt") as $reqF) {
+			/*		TIP:
+				You must control the creation/deletion of temp files to avoid excess (data will be taken from the last)
+			*/
 			$reqfile 	= file($reqF, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
 			$curreq 	= trim($reqfile[0]);
 			$curtype	= trim($reqfile[1]);
 			unlink($reqF);
-			break;
 		}
 		
 		foreach($this->ReqFunc as $key => $value){

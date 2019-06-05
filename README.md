@@ -62,9 +62,11 @@ Copy the "TgLongReq.php" to the project dir and:
 3.  **Save and restore temprorary data**
 
  - **saving**
+ 
 For store (temporary) data, you can use "SaveToTemp", the function accepts any data types and saves it as json array
 > $tg_req->SaveToTemp(\$some_data);
 - **restore**
+
 But, the data is restored from file, only as an array.
 >$some_array = array();
 >$some_array = \$tg_req->GetFromTemp(\$hold_it==false);*

@@ -1,3 +1,4 @@
+
 # TG LONG REQUEST
 ## What is this?
   
@@ -58,21 +59,33 @@ Copy the "TgLongReq.php" to the project dir and:
 
 *This parameter depends only on you (this name should be in the association table)
 
-3. **Check the existence of the request**
+3.  **Save and restore temprorary data**
+
+ - **saving**
+For store (temporary) data, you can use "SaveToTemp", the function accepts any data types and saves it as json array
+> $tg_req->SaveToTemp(\$some_data);
+- **restore**
+But, the data is restored from file, only as an array.
+>$some_array = array();
+>$some_array = \$tg_req->GetFromTemp(\$hold_it==false);*
+
+\*  If needed, you can leave a temporary file until the next useб for this pass to function "true"(bool)
+
+4. **Check the existence of the request**
 
 >  $tg_req->ReqCheck();
 >  //return true if exists, else false
 
-4. **Delete user request**
+5. **Delete user request**
 
 > $tg_req->ReqDel();
 
-5. **Handling request**
+6. **Handling request**
 
 > $tg_req->ReqHand();
 > //This method will call the corresponding function from the association table.
 
- 6. **NOTES**
+ 7. **NOTES**
  - Association table is array('req_name'=>'func_name')
  - Functions specified in the table may not process passed parameters 
 

@@ -28,6 +28,7 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
 Copy the "TgLongReq.php" to the project dir and:
 
     include_once('TgLongReq.php');
+	use TgLongReq\TgLongReq;
 
 ## Simple use
 
@@ -65,16 +66,16 @@ Copy the "TgLongReq.php" to the project dir and:
 
  - **saving**
  
-For store (temporary) data, you can use "SaveToTemp", the function accepts any data types and saves it as json array
+For store (temporary) data, you can use "SaveToTemp", the function accepts any data types and saves it as json string
 > $tg_req->SaveToTemp(\$some_data);
 
 - **restore**
 
-But, the data is restored from file, only as an array.
+.
 >$some_array = array();
 >$some_array = \$tg_req->GetFromTemp(\$hold_it==false);*
 
-\*  If needed, you can leave a temporary file until the next useб for this pass to function "true"(bool)
+\*  If needed, you can leave a temporary file until the next used, for this pass to function "true"(bool)
 
 ---
 4. **Check the existence of the request**

@@ -96,5 +96,5 @@ For store (temporary) data, you can use "SaveToTemp", the function accepts any d
  - Association table is array('req_name'=>'func_name')
  - Functions specified in the table may not process passed parameters 
 
-> I will add an example of use soon...
+> Some examples you can find at ./exmp
 

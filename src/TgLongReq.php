@@ -1,5 +1,5 @@
 <?php
-namespace TgLongReq;
+
 	/*
 			MIT License
 
@@ -25,14 +25,27 @@ namespace TgLongReq;
 	*/
 
 
-
-
-
-   /*###################################################################################################################################
-	#		It`s a basic class for create and execute 'longer' request in telegram bot	(for exemple: when usr working with bot menu) 
-	*###################################################################################################################################
+   /*#######################################################################################################################################*
+	#		It`s a basic class for create and execute 'longer' request in telegram bot	(for exemple: when usr working with bot menu)		#
+	*#######################################################################################################################################*
 	*
-	*	I'll tell an example soon...
+	*	Some examples you can find at ./exmp
+	*/
+	
+	
+namespace TgLongReq;
+	
+	/*
+		Functions return struct -> array('func_res' => $FuncResult(ANY), 'error' => True/False(BOOL), 'err_discript' => error_caption(STR))
+	*
+	(FUNC)	ReqCreate	(STRING, STRING='usual')	RTRN:$FuncResult = array(reqName, reqType)
+	(FUNC)	ReqCheck	()							RTRN:$FuncResult = False/reqType
+	(FUNC)	ReqHand		()							RTRN:$FuncResult = $reqHandFuncResult
+	(FUNC)	ReqDel		()							RTRN:$FuncResult = NULL
+	(FUNC)	SaveToTemp	(ANY)						RTRN:$FuncResult = json_str
+	(FUNC)	GetFromTemp	(BOOL)						RTRN:$FuncResult = $decodedJsonObj
+	*
+	(FUNC)	GetError	()							Return only 'error' and 'err_discript' fields
 	*/
 
 class TgLongReq{
@@ -47,14 +60,16 @@ class TgLongReq{
 	*
 	!	IF YOU WANT 'tg_api' and 'tg_result' can be of any type, or be NULL, depending on their further use
 	*/
-	private $temp_file_prefix = 'TempData';
+	
 	public  $temp_data_dir;
 	public  $usrid;
-	public  $usr_req_dir;
-	private $ReqFunc = array();
-	private $tg_result;
-	private $tg_api;
-	private $err_tab=array();
+	public  $usr_req_dir;	
+	public  $tg_result;
+	public  $tg_api;	
+	
+	private $err_tab			= array();
+	private $ReqFunc 			= array();
+	private $temp_file_prefix 	= 'TempData';
 	
 	
 	/*
@@ -66,7 +81,7 @@ class TgLongReq{
 	public function __construct($u_id, $ReqFunc, $usr_req_dir = 'req/', $tg_api=null, $tg_result=null){
 		
 		$this->usrid 		= $u_id;
-		$this->usr_req_dir	= $_SERVER['DOCUMENT_ROOT'].$usr_req_dir;
+		$this->usr_req_dir	= $_SERVER['DOCUMENT_ROOT'].'/'.$usr_req_dir;
 		$this->ReqFunc		= $ReqFunc;
 		$this->tg_result	= $tg_result;
 		$this->tg_api		= $tg_api;	
@@ -76,7 +91,7 @@ class TgLongReq{
 		if(!file_exists($this->usr_req_dir)) mkdir($this->usr_req_dir, 0777, true);
 	}
 	
-	/*		RETRUNS
+	/*		RETURNS
 		@ 	$BaseRtrnObj	ARRAY	array('error'=>true/false, 'err_discript'=>none/'str', 'func_res'=>none/somthing)//ReqHand() return 'func_res'=>REQ_FUNC_RTRN-result
 	*	
 		But ReqCheck() return true(if req exists) otherwise false
@@ -107,8 +122,7 @@ class TgLongReq{
 		foreach($this->ReqFunc as $key=>$val){
 			if($key == $name){
 				
-				$usr_req_file = fopen($this->usr_req_dir.'/'.$this->usrid . date("-y.m.d-h_i_s").'.txt', 'w+');
-				if(!file_exists($usr_req_dir)) mkdir($usr_req_file, 0777, true);
+				$usr_req_file = fopen($this->usr_req_dir.'/'.$this->usrid . date("-y.m.d-h_i_s").'.txt', 'w+');				
 				fwrite($usr_req_file, $key."\n".$type);
 				fclose($usr_req_file);
 				return $this->SetError(array($key, $type));
@@ -147,7 +161,7 @@ class TgLongReq{
 		}
 		
 		foreach($this->ReqFunc as $key => $value){
-				if($key == $curreq) return $this->SetError(($this->ReqFunc[$key])($this->tg_result, $this, $key));
+				if($key == $curreq) return $this->SetError((($this->ReqFunc[$key])($this->tg_result, $this, $key)));
 		}
 		return $this->SetError(NULL, true, 'REQ_DIDNT_MATCH');
 	}
@@ -195,15 +209,17 @@ class TgLongReq{
 		/*
 			GET LAST ERROR
 		*/
-		$rtrn_arr = array();
 		
+		$rtrn_arr['error'] = $this->err_tab['error'];		
 		if($this->err_tab['error'])
 			$rtrn_arr['err_discript'] = $this->err_tab['err_discript'];			
-		$rtrn_arr['error'] = $this->err_tab['error'];
-		
+			
 		return $rtrn_arr;
 	}
-	private function SetError(&$func_res=NULL, $error = false, $err_discript="SOME_ERROR"){
+	private function SetError($func_res=NULL, $error = false, $err_discript="SOME_ERROR"){
+		/*
+			SET ERROR
+		*/
 		
 		if($error)
 			$this->err_tab['err_discript'] = $err_discript;

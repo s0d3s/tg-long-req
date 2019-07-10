@@ -70,7 +70,6 @@ class TgLongReq{
 	private $err_tab			= array();
 	private $ReqFunc 			= array();
 	private $temp_file_prefix 	= 'TempData';
-	private $NewLine			= "\n";
 	
 	
 	/*
@@ -79,7 +78,7 @@ class TgLongReq{
 	!	and to facilitate the class itself.
 	*/
 	
-	public function __construct($u_id, $ReqFunc, $usr_req_dir = 'req/', $tg_api=null, $tg_result=null, $SERVER_STRUCT_IS_WINDOWS = false){
+	public function __construct($u_id, $ReqFunc, $usr_req_dir = 'req/', $tg_api=null, $tg_result=null){
 		
 		$this->usrid 		= $u_id;
 		$this->usr_req_dir	= $_SERVER['DOCUMENT_ROOT'].'/'.$usr_req_dir;
@@ -88,7 +87,6 @@ class TgLongReq{
 		$this->tg_api		= $tg_api;	
 		$this->temp_data_dir= $this->usr_req_dir.$this->temp_file_prefix.'/';
 		
-		if($SERVER_STRUCT_IS_WINDOWS) $NewLine = "\r\n";
 		if(!file_exists($this->temp_data_dir)) mkdir($this->temp_data_dir, 0777, true);
 		if(!file_exists($this->usr_req_dir)) mkdir($this->usr_req_dir, 0777, true);
 	}
@@ -125,12 +123,12 @@ class TgLongReq{
 			if($key == $name){
 				
 				$usr_req_file = fopen($this->usr_req_dir.'/'.$this->usrid . date("-y.m.d-h_i_s").'.txt', 'w+');				
-				fwrite($usr_req_file, $key.$NewLine.$type);
+				fwrite($usr_req_file, $key."\r\n".$type);
 				fclose($usr_req_file);
 				return $this->SetError(array($key, $type));
 			}
 		}
-		return $this->SetError(NULL, true, 'REQ_DIDNT_EXIST_IN_THE_TABLE');
+		return $this->SetError(NULL, true, 'ReqCreate::REQ_DIDNT_EXIST_IN_THE_TABLE');
 	}
 	public function ReqDel(){
 		/*
@@ -165,7 +163,7 @@ class TgLongReq{
 		foreach($this->ReqFunc as $key => $value){
 				if($key == $curreq) return $this->SetError((($this->ReqFunc[$key])($this->tg_result, $this, $key)));
 		}
-		return $this->SetError(NULL, true, 'REQ_DIDNT_MATCH');
+		return $this->SetError(NULL, true, 'ReqHand::REQ_DIDNT_MATCH');
 	}
 	
 	public function SaveToTemp($data){

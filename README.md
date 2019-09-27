@@ -21,14 +21,14 @@ This is a small help-oriented class for creating tg bots. It helps with the crea
    and 
    
     include_once('path/to/autoload.php');
-	use TgLongReq\TgLongReq;
+	use s0d3s\TgLongReq;
 
 **manual**
 
 Copy the "TgLongReq.php" to the project dir and:
 
     include_once('TgLongReq.php');
-	use TgLongReq\TgLongReq;
+	use s0d3s\TgLongReq;
 
 ## Simple use
 
@@ -46,7 +46,7 @@ Copy the "TgLongReq.php" to the project dir and:
 |Var|Type|Caption|
 |--|--|--|
 |$user_id| STRING | Telegram user id |
-|$ReqFunc| ARRAY | Requests and functions association table |
+|$req_func| ARRAY | Requests and functions association table |
 |$usr_req_dir|STR| Path to general request dir **|
 |$tg_api_key| SOMETH/* | irazasyed/telegram-bot-sdk Api() object* |
 |$tg_api_result| SOMETH/* |Api()->getWebhookUpdates() |
@@ -57,7 +57,7 @@ Copy the "TgLongReq.php" to the project dir and:
 ---
 2. **Create request**
 
-> $tg_req->ReqCreate('req_name'); *
+> $tg_req->reqCreate('req_name'); *
 
 *This parameter depends only on you (this name should be in the association table)
 
@@ -66,30 +66,30 @@ Copy the "TgLongReq.php" to the project dir and:
 
  - **saving**
  
-For store (temporary) data, you can use "SaveToTemp", the function accepts any data types and saves it as json string
-> $tg_req->SaveToTemp(\$some_data);
+For store (temporary) data, you can use "saveToTemp", the function accepts any data types and saves it as json string
+> $tg_req->saveToTemp(\$some_data);
 
 - **restore**
 
 .
 >$some_array = array();
->$some_array = \$tg_req->GetFromTemp(\$hold_it==false);*
+>$some_array = \$tg_req->getFromTemp(\$hold_it==false);*
 
 \*  If needed, you can leave a temporary file until the next used, for this pass to function "true"(bool)
 
 ---
 4. **Check the existence of the request**
 
->  $tg_req->ReqCheck();
+>  $tg_req->reqCheck();
 >  //return true if exists, else false
 ---
 5. **Delete user request**
 
-> $tg_req->ReqDel();
+> $tg_req->reqDel();
 ---
 6. **Handling request**
 
-> $tg_req->ReqHand();
+> $tg_req->reqHand();
 > //This method will call the corresponding function from the association table.
 ---
  7. **NOTES**

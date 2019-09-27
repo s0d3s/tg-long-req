@@ -1,6 +1,6 @@
 {
   "name": "s0d3s/tg-long-req",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Simple PHP class for navigate user in telegram bot(by design)",
   "keywords": ["telegram", "telegram bot", "request", "telegram bot menu"],
   "type": "library",
@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TgLongReq\\": "src/"
+      "s0d3s\\": "src/"
     }
   },
   "suggest": {

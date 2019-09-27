@@ -142,7 +142,8 @@ class TgLongReq{
         return $this->setError();
     }
     
-    public function reqHand(){
+    public function reqHand()
+    {
         /*
             HANDLE REQUEST
         */
@@ -163,13 +164,15 @@ class TgLongReq{
             unlink($reqF);
         }
         
-        foreach($this->req_func as $key => $value){
+        foreach($this->req_func as $key => $value)
+        {
                 if($key == $curreq) return $this->setError((($this->req_func[$key])($this->tg_result, $this, $key)));
         }
         return $this->setError(NULL, true, 'reqHand::REQ_DIDNT_MATCH');
     }
     
-    public function saveToTemp($data){
+    public function saveToTemp($data)
+    {
         /*
             SAVING TEMPORARY DATA TO TEMP FILE
         */
@@ -191,7 +194,8 @@ class TgLongReq{
         return $this->setError($str2write, false);
     }
     
-    public function getFromTemp($hold_it = false){
+    public function getFromTemp($hold_it = false)
+    {
         /*
             RETURNS THE OBJECT RECEIVED FROM THE TEMP FILE
         */
@@ -208,7 +212,8 @@ class TgLongReq{
         return $rtrn_obj;
     }
     
-    public function getError(){
+    public function getError()
+    {
         /*
             GET LAST ERROR
         */

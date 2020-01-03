@@ -14,9 +14,11 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0"
+    ""s0d3s/tg-long-req": ">=1"
   },
   "autoload": {
+    include_once('path/to/autoload.php');
+use s0d3s\TgLongReq;
     "psr-4": {
       "s0d3s\\": "src/"
     }
